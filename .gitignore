@@ -1,0 +1,12 @@
+# Compiler output
+*.o
+*.out
+core
+
+# Week 1 executables
+/week01/array
+/week01/hello
+/week01/malloc_practice
+/week01/string
+/week01/struct
+/week01/swap
