@@ -1,4 +1,4 @@
-/* 参考 wdxtub 的 Malloc Lab 笔记，链接见根目录 README.md。 */
+/* Reference: https://www.wdxtub.com/blog/csapp/thick-csapp-lab-6 */
 #include <limits.h>
 #include <stdint.h>
 #include <stdio.h>
