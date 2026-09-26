@@ -1,9 +1,18 @@
-# Compiler output
+# 编译和调试产物
 *.o
 *.out
 core
+__pycache__/
+*.pyc
 
-# Week 1 executables
+# 临时资料和本地配置
+/.docx-work/
+/.attack-source/
+**/.vscode/
+.DS_Store
+/*-handout.tar
+/*-submit.tar.gz
+
 /week01/array
 /week01/hello
 /week01/malloc_practice
@@ -11,8 +20,33 @@ core
 /week01/struct
 /week01/swap
 
-# Data Lab generated test programs
 /datalab/btest
 /datalab/fshow
 /datalab/ishow
 /datalab/save-bits.c
+
+/bomblab/bomb.asm
+
+/cachelab/csim
+/cachelab/test-trans
+/cachelab/tracegen
+/cachelab/.csim_results
+/cachelab/.marker
+/cachelab/trace.all
+/cachelab/trace.f*
+/cachelab/trace.tmp
+/cachelab/*-handin.tar
+
+/tshlab/tsh
+/tshlab/myint
+/tshlab/myspin
+/tshlab/mysplit
+/tshlab/mystop
+
+/malloclab/mdriver
+
+/proxylab/proxy
+/proxylab/.proxy/
+/proxylab/.noproxy/
+/proxylab/tiny/tiny
+/proxylab/tiny/cgi-bin/adder

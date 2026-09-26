@@ -1,7 +1,5 @@
 /* 
- * tsh - A tiny shell program with job control
- * 
- * CS:APP Shell Lab implementation.
+ * tsh - 支持前后台作业和信号处理的简单 shell。
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -177,11 +175,7 @@ void eval(char *cmdline)
     if (builtin_cmd(argv))
 	return;
 
-    /*
-     * Block signals while forking and adding the job.  In particular,
-     * SIGCHLD must not be handled before the parent records the child in
-     * the job list.
-     */
+    /* 防止子进程在 addjob 前退出并被回收。 */
     if (sigfillset(&mask_all) < 0)
 	unix_error("sigfillset error");
     if (sigprocmask(SIG_BLOCK, &mask_all, &prev_mask) < 0)
@@ -194,7 +188,6 @@ void eval(char *cmdline)
     }
 
     if (pid == 0) {
-	/* Give the job its own process group before it starts running. */
 	if (setpgid(0, 0) < 0)
 	    unix_error("setpgid error");
 	if (sigprocmask(SIG_SETMASK, &prev_mask, NULL) < 0)
@@ -304,7 +297,6 @@ int builtin_cmd(char **argv)
 	return 1;
     }
 
-    /* A standalone ampersand is harmless and is treated as a builtin. */
     if (!strcmp(argv[0], "&"))
 	return 1;
 
@@ -396,7 +388,7 @@ void waitfg(pid_t pid)
     if (sigprocmask(SIG_BLOCK, &chld_mask, &prev_mask) < 0)
 	unix_error("sigprocmask error");
 
-    /* sigsuspend closes the race between checking fgpid and sleeping. */
+    /* 检查和等待之间不能漏掉 SIGCHLD。 */
     while (pid == fgpid(jobs))
 	sigsuspend(&prev_mask);
 
@@ -701,4 +693,3 @@ void sigquit_handler(int sig)
     printf("Terminating after receipt of SIGQUIT signal\n");
     exit(1);
 }
-

@@ -119,7 +119,6 @@ unsigned、任意整数常量，以及针对这两种类型的算术、逻辑和
  *   难度：1
  */
 int bitXor(int x, int y) {
-  /* 保留只在 x 和 y 其中一个数中出现的位。 */
   return ~(~x & ~y) & ~(x & y);
 }
 /*
@@ -129,7 +128,6 @@ int bitXor(int x, int y) {
  *   难度：1
  */
 int tmin(void) {
-  /* 最小补码整数只有符号位为 1。 */
   return 1 << 31;
 }
 //2
@@ -140,7 +138,7 @@ int tmin(void) {
  *   难度：1
  */
 int isTmax(int x) {
-  /* 对 Tmax 而言，x + (x + 1) 等于 -1；同时排除 x 等于 -1。 */
+  /* 排除 -1。 */
   int next = x + 1;
   return !(~(x + next)) & !!next;
 }
@@ -153,7 +151,6 @@ int isTmax(int x) {
  *   难度：2
  */
 int allOddBits(int x) {
-  /* 使用合法的单字节常量构造 0xAAAAAAAA。 */
   int mask = 0xAA | (0xAA << 8);
   mask = mask | (mask << 16);
   return !((x & mask) ^ mask);
@@ -180,7 +177,6 @@ int negate(int x) {
  *   难度：3
  */
 int isAsciiDigit(int x) {
-  /* x - 0x30 与 0x39 - x 必须同时为非负数。 */
   int aboveLower = x + (~0x30 + 1);
   int belowUpper = 0x39 + (~x + 1);
   return !(aboveLower >> 31) & !(belowUpper >> 31);
@@ -193,7 +189,6 @@ int isAsciiDigit(int x) {
  *   难度：3
  */
 int conditional(int x, int y, int z) {
-  /* 将 x 的真假值扩展为全 0 或全 1 的掩码。 */
   int truth = !!x;
   int mask = ~truth + 1;
   return (mask & y) | (~mask & z);
@@ -206,7 +201,7 @@ int conditional(int x, int y, int z) {
  *   难度：3
  */
 int isLessOrEqual(int x, int y) {
-  /* 异号时不会发生减法溢出；同号时检查 y - x 的符号。 */
+  /* 异号单独处理，避免减法溢出。 */
   int xNegative = (x >> 31) & 1;
   int yNegative = (y >> 31) & 1;
   int signsDiffer = xNegative ^ yNegative;
@@ -223,7 +218,6 @@ int isLessOrEqual(int x, int y) {
  *   难度：4
  */
 int logicalNeg(int x) {
-  /* 对任意非零 x，x 和 -x 中至少有一个数的符号位为 1。 */
   return ((x | (~x + 1)) >> 31) + 1;
 }
 /* howManyBits —— 返回使用二进制补码表示 x 所需的最少位数
@@ -238,7 +232,6 @@ int logicalNeg(int x) {
  *   难度：4
  */
 int howManyBits(int x) {
-  /* 先将负数规格化，再使用二分查找定位最高的 1 位。 */
   int b16, b8, b4, b2, b1;
   x = x ^ (x >> 31);
   b16 = !!(x >> 16) << 4;

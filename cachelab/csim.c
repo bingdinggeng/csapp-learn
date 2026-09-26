@@ -1,10 +1,3 @@
-/*
- * csim.c - A cache simulator using an LRU replacement policy.
- *
- * The simulator accepts Valgrind Lackey traces and reproduces the output of
- * csim-ref. Instruction fetches are ignored; a modify operation is modeled
- * as a load followed by a store.
- */
 #include <errno.h>
 #include <getopt.h>
 #include <limits.h>
@@ -62,7 +55,6 @@ static int parse_nonnegative_int(const char *text, int *value)
     return 1;
 }
 
-/* Simulate one load or store and print its result when -v is enabled. */
 static void access_cache(cache_t *cache, uint64_t address)
 {
     uint64_t set_mask;

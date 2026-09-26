@@ -95,6 +95,5 @@ rtest16:
 
 # clean up
 clean:
-	rm -f $(FILES) *.o *~
-
+	rm -f $(FILES) *.o *~ tshref.out
 

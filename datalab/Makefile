@@ -2,8 +2,7 @@
 # Makefile that builds btest and other helper programs for the CS:APP data lab
 # 
 CC = gcc
-# Modern Ubuntu does not install the legacy 32-bit libc headers by default.
-# Data Lab operates on 32-bit int/unsigned values on x86-64 as required.
+# 使用 64 位环境编译，int 和 unsigned 仍为题目要求的 32 位。
 CFLAGS = -O -Wall
 LIBS = -lm
 
@@ -24,4 +23,3 @@ btestexplicit:
 
 clean:
 	rm -f *.o btest fshow ishow *~
-

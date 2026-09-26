@@ -26,11 +26,6 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
     int a0, a1, a2, a3, a4, a5, a6, a7;
 
     if (M == 32 && N == 32) {
-        /*
-         * An 8x8 tile is exactly eight cache blocks. Deferring the
-         * diagonal element prevents A and B from repeatedly evicting each
-         * other when the tile lies on the matrix diagonal.
-         */
         for (i = 0; i < N; i += 8) {
             for (j = 0; j < M; j += 8) {
                 for (k = i; k < i + 8; k++) {
@@ -51,11 +46,7 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
     }
 
     if (M == 64 && N == 64) {
-        /*
-         * Split every 8x8 tile into four 4x4 quadrants. The upper-right
-         * quadrant is staged in B, then exchanged with the lower-left
-         * quadrant before either cache block is displaced.
-         */
+        /* 右上 4×4 先暂存在 B，后面再交换。 */
         for (i = 0; i < N; i += 8) {
             for (j = 0; j < M; j += 8) {
                 for (k = i; k < i + 4; k++) {
@@ -111,7 +102,6 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
         return;
     }
 
-    /* 17x17 blocking handles the irregular 61x67 boundaries efficiently. */
     for (i = 0; i < N; i += 17) {
         for (j = 0; j < M; j += 17) {
             for (k = i; k < i + 17 && k < N; k++) {
